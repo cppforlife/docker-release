@@ -1,0 +1,15 @@
+docker/aufs-tools_20120411-3_amd64.deb:
+  size: 91762
+  sha: 2dfc1fe386cd3f05ac7e0b4ebcf3ebc8a7f3b04d
+docker/autoconf-2.69.tar.gz:
+  size: 1927468
+  sha: 562471cbcb0dd0fa42a76665acf0dbb68479b78a
+docker/bridge-utils-1.5.tar.gz:
+  size: 33472
+  sha: 1f71b6f22f5d2b6d21e146f4ac20820ad42e58ee
+docker/docker-1.10.1:
+  size: 34874552
+  sha: 903961b8a1500b3a92e58026939d34f3770e55c9
+docker/swarm-1.1.0.tar:
+  size: 18152448
+  sha: 1c8517818f911c46b7cea008af807774257acf70

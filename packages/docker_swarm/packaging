@@ -1,0 +1,5 @@
+#!/bin/bash
+
+set -e -u
+
+cp ${BOSH_COMPILE_TARGET}/docker/swarm-*.tar ${BOSH_INSTALL_TARGET}/

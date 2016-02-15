@@ -1,0 +1,7 @@
+---
+name: docker_swarm
+
+dependencies: []
+
+files:
+- docker/swarm-1.1.0.tar
