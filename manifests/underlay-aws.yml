@@ -1,0 +1,72 @@
+---
+name: underlay
+
+releases:
+- {name: etcd, version: 35}
+- {name: docker, version: 0+dev.10}
+
+stemcells:
+- name: bosh-aws-xen-hvm-ubuntu-trusty-go_agent
+  version: 3191
+  alias: default
+
+update:
+  canaries: 0
+  max_in_flight: 32
+  serial: false
+  canary_watch_time: 30000-60000
+  update_watch_time: 30000-60000
+
+jobs:
+- name: etcd
+  azs: [z1]
+  templates:
+  - {name: etcd, release: etcd}
+  instances: 1
+  vm_type: medium
+  stemcell: default
+  persistent_disk: 2000
+  networks:
+  - name: private
+    static_ips: [10.10.0.64]
+  properties:
+    etcd:
+      machines: [10.10.0.64]
+      require_ssl: false
+      peer_require_ssl: false
+
+- name: underlay
+  azs: [z1, z3]
+  templates:
+  - {name: docker, release: docker}
+  instances: 3
+  vm_type: medium
+  stemcell: default
+  persistent_disk: 30000
+  networks:
+  - name: private
+    static_ips: [10.10.0.62, 10.10.64.121, 10.10.0.63]
+
+- name: bootstrap_swarm
+  azs: [z1]
+  templates:
+  - {name: bootstrap_swarm, release: docker}
+  instances: 1
+  lifecycle: errand
+  vm_type: medium
+  stemcell: default
+  networks:
+  - name: private
+  update:
+    canary_watch_time: 3000-30000
+    update_watch_time: 3000-30000
+
+properties:
+  docker:
+    inside_container: true
+    tcp_address: 0.0.0.0
+    cluster_store: etcd://10.10.0.64:4001
+  bootstrap_swarm:
+    listen_address: 10.10.0.62
+    hosts: [10.10.0.62, 10.10.64.121, 10.10.0.63]
+    cluster_store: etcd://10.10.0.64:4001

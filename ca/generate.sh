@@ -43,9 +43,7 @@ EOL
   rm ./openssl-exts.conf
 }
 
-generateCert 22 10.244.0.22
-generateCert 26 10.244.0.26
-generateCert 30 10.244.0.30
+generateCert director 127.0.0.1 # <--- Replace with public Director IP
 
 echo "Finished..."
 ls -la .
