@@ -3,12 +3,63 @@ name: underlay
 
 releases:
 - {name: etcd, version: 35}
-- {name: docker, version: 0+dev.10}
+- {name: docker, version: latest}
 
-compilation:
-  workers: 3
-  reuse_compilation_vms: true
-  network: default
+stemcells:
+- alias: default
+  os: ubuntu-trusty
+  version: latest
+
+instance_groups:
+- name: etcd
+  instances: 1
+  azs: [z1]
+  jobs:
+  - name: etcd
+    release: etcd
+    properties:
+      etcd:
+        machines: [10.244.1.34]
+        require_ssl: false
+        peer_require_ssl: false
+  vm_type: default
+  stemcell: default
+  persistent_disk: 1000
+  networks:
+  - name: default
+    static_ips: [10.244.1.34] # todo etcd link
+
+- name: underlay
+  instances: 3
+  azs: [z1]
+  jobs:
+  - name: docker
+    release: docker
+    properties:
+      inside_container: true
+      cluster_store: etcd://10.244.1.34:4001
+  vm_type: default
+  stemcell: default
+  persistent_disk: 6000
+  networks:
+  - name: default
+
+- name: bootstrap_swarm
+  instances: 1
+  azs: [z1]
+  jobs:
+  - name: bootstrap_swarm
+    release: docker
+    properties:
+      cluster_store: etcd://10.244.1.34:4001
+  lifecycle: errand
+  vm_type: default
+  stemcell: default
+  networks:
+  - name: default
+  update:
+    canary_watch_time: 3000-30000
+    update_watch_time: 3000-30000
 
 update:
   canaries: 0
@@ -16,97 +67,3 @@ update:
   serial: false
   canary_watch_time: 30000-60000
   update_watch_time: 30000-60000
-
-resource_pools:
-- name: default
-  network: default
-  stemcell:
-    name: bosh-warden-boshlite-ubuntu-trusty-go_agent
-    version: 3147
-
-jobs:
-- name: etcd
-  templates:
-  - {name: etcd, release: etcd}
-  instances: 1
-  resource_pool: default
-  persistent_disk: 1000
-  networks:
-  - name: default
-    static_ips: [10.244.0.58]
-  properties:
-    etcd:
-      machines: [10.244.0.58]
-      require_ssl: false
-      peer_require_ssl: false
-
-- name: underlay
-  templates:
-  - {name: docker, release: docker}
-  instances: 3
-  resource_pool: default
-  persistent_disk: 6000
-  networks:
-  - name: default
-    static_ips: [10.244.0.2, 10.244.0.6, 10.244.0.10]
-
-- name: bootstrap_swarm
-  templates:
-  - {name: bootstrap_swarm, release: docker}
-  instances: 1
-  lifecycle: errand
-  resource_pool: default
-  networks:
-  - name: default
-  update:
-    canary_watch_time: 3000-30000
-    update_watch_time: 3000-30000
-
-properties:
-  docker:
-    inside_container: true
-    tcp_address: 0.0.0.0
-    cluster_store: etcd://10.244.0.58:4001
-  bootstrap_swarm:
-    listen_address: 10.244.0.2
-    hosts: [10.244.0.2, 10.244.0.6, 10.244.0.10]
-    cluster_store: etcd://10.244.0.58:4001
-
-networks:
-- name: default
-  type: manual
-  subnets:
-  - range: 10.244.0.0/30
-    reserved: [10.244.0.1]
-    static: [10.244.0.2]
-  - range: 10.244.0.4/30
-    reserved: [10.244.0.5]
-    static: [10.244.0.6]
-  - range: 10.244.0.8/30
-    reserved: [10.244.0.9]
-    static: [10.244.0.10]
-  - range: 10.244.0.12/30
-    reserved: [10.244.0.13]
-  - range: 10.244.0.16/30
-    reserved: [10.244.0.17]
-  - range: 10.244.0.20/30
-    reserved: [10.244.0.21]
-  - range: 10.244.0.24/30
-    reserved: [10.244.0.25]
-  - range: 10.244.0.28/30
-    reserved: [10.244.0.29]
-  - range: 10.244.0.32/30
-    reserved: [10.244.0.33]
-  - range: 10.244.0.36/30
-    reserved: [10.244.0.37]
-  - range: 10.244.0.40/30
-    reserved: [10.244.0.41]
-  - range: 10.244.0.44/30
-    reserved: [10.244.0.45]
-  - range: 10.244.0.48/30
-    reserved: [10.244.0.49]
-  - range: 10.244.0.52/30
-    reserved: [10.244.0.53]
-  - range: 10.244.0.56/30
-    reserved: [10.244.0.57]
-    static: [10.244.0.58]

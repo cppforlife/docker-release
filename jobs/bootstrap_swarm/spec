@@ -1,6 +1,10 @@
 ---
 name: bootstrap_swarm
 
+consumes:
+- name: docker
+  type: docker
+
 packages:
 - docker
 - docker_swarm
@@ -9,22 +13,10 @@ templates:
   run.sh: bin/run
 
 properties:
-  bootstrap_swarm.listen_address:
-    description: "Docker host for running swarm manage"
-    example: 10.244.0.2
-
-  bootstrap_swarm.listen_port:
+  listen_port:
     description: "Port for swarm manage"
     default: 2375
 
-  bootstrap_swarm.hosts:
-    description: "Docker hosts for running swarm join"
-    example: [10.244.0.2, 10.244.0.6, 10.244.0.10]
-
-  bootstrap_swarm.host_port:
-    description: "Docker hosts' port"
-    default: 4243
-
-  bootstrap_swarm.cluster_store:
+  cluster_store:
     description: "Docker's cluster store to use"
     example: etcd://10.244.0.58:4001

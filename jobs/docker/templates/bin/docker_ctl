@@ -18,7 +18,7 @@ case $1 in
     create_group ${DOCKER_GROUP}
     create_user ${DOCKER_USER} ${DOCKER_GROUP}
 
-    <% if p("docker.inside_container") %>
+    <% if p("inside_container") %>
       touch /.dockerenv
     <% end %>
 

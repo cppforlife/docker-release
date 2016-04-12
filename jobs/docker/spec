@@ -1,6 +1,12 @@
 ---
 name: docker
 
+provides:
+- name: docker
+  type: docker
+  properties:
+  - listen_port
+
 packages:
 - docker
 
@@ -15,107 +21,109 @@ templates:
   config/logrotate.conf.erb: config/logrotate.conf
 
 properties:
-  docker.user:
+  user:
     description: "User which will own the Docker services"
     default: "root"
-  docker.group:
+  group:
     description: "Group which will own the Docker services"
     default: "vcap"
-  docker.tcp_address:
+
+  listen_address:
     description: "TCP address where Docker daemon will listen to (if not set, TCP will not be available)"
-    default: "127.0.0.1"
-  docker.tcp_port:
+    default: "0.0.0.0"
+  listen_port:
     description: "TCP port where Docker daemon will listen to (if not set, TCP will not be available)"
     default: "4243"
-  docker.api_cors_header:
+
+  api_cors_header:
     description: "Set CORS headers in the remote API"
     default: false
-  docker.bridge:
+  bridge:
     description: "Name of the network bridge to attach containers (defaults to docker0)"
-  docker.cidr_prefix:
+  cidr_prefix:
     description: "CIDR notation prefix (first 2 octets) for the network bridges IP"
-  docker.debug:
+  debug:
     description: "Enable debug mode"
     default: false
-  docker.default_gateway:
+  default_gateway:
     description: "Container default gateway IPv4 address"
-  docker.default_gateway_v6:
+  default_gateway_v6:
     description: "Container default gateway IPv6 address"
-  docker.default_ulimits:
+  default_ulimits:
     description: "Array of default ulimits for containers"
-  docker.dns_servers:
+  dns_servers:
     description: "Array of DNS servers to be used by Docker"
-  docker.dns_domains:
+  dns_domains:
     description: "Array of DNS search domains to be used by Docker"
-  docker.exec_driver:
+  exec_driver:
     description: "Use a specific exec driver"
-  docker.exec_options:
+  exec_options:
     description: "Array of exec driver options"
-  docker.icc:
+  icc:
     description: "Allow unrestricted inter-container and Docker daemon host communication"
     default: true
-  docker.insecure_registries:
+  insecure_registries:
     description: "Array of insecure registries (no certificate verification for HTTPS and enable HTTP fallback)"
-  docker.ip_forward:
+  ip_forward:
     description: "Enable net.ipv4.ip_forward and IPv6 forwarding"
     default: true
-  docker.ip_masq:
+  ip_masq:
     description: "Enable IP masquerading for bridge's IP range"
     default: true
-  docker.iptables:
+  iptables:
     description: "Enable Docker's addition of iptables rules"
     default: true
-  docker.ipv6:
+  ipv6:
     description: "Enable IPv6 networking"
     default: false
-  docker.log_level:
+  log_level:
     description: "Set the logging level (debug, info, warn, error, fatal)"
     default: "info"
-  docker.labels:
+  labels:
     description: "Array of key=value labels for the daemon"
-  docker.mtu:
+  mtu:
     description: "Set the containers network MTU (if no value is provided: default to the default route MTU or 1500 if no default route is available)"
-  docker.registry_mirrors:
+  registry_mirrors:
     description: "Array of preferred Docker registry mirrors"
-  docker.selinux_enable:
+  selinux_enable:
     description: "Enable selinux support"
     default: false
-  docker.storage_driver:
+  storage_driver:
     description: "Use a specific storage driver"
-  docker.storage_options:
+  storage_options:
     description: "Array of storage driver options"
 
-  docker.tls:
+  tls:
     description: "Use TLS"
     default: false
-  docker.tls_cacert:
+  tls_cacert:
     description: "Trust only remotes providing a certificate signed by the CA given here"
-  docker.tls_cert:
+  tls_cert:
     description: "TLS certificate file"
-  docker.tls_key:
+  tls_key:
     description: "TLS key file"
-  docker.tls_verify:
+  tls_verify:
     description: "Use TLS and verify the remote"
     default: false
-  docker.userland_proxy:
+  userland_proxy:
     description: "Use userland proxy for loopback traffic"
     default: true
 
-  docker.daemon.logrotate.frequency:
+  daemon.logrotate.frequency:
     description: "Frequency to run logrotate for Docker daemon log files (crontab five time and date fields)"
     default: "0 * * * *"
-  docker.daemon.logrotate.rotate:
+  daemon.logrotate.rotate:
     description: "Number of times Docker daemon log files are rotated before being removed"
     default: "7"
-  docker.daemon.logrotate.size:
+  daemon.logrotate.size:
     description: "Size before Docker daemon log files are rotated"
     default: "10M"
 
-  docker.inside_container:
+  inside_container:
     description: "This job is running inside another container"
     default: false
 
-  docker.cluster_store:
+  cluster_store:
     description: "Cluster store URL"
     example: etcd://some-host:port
 
