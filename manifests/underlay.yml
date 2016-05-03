@@ -2,7 +2,7 @@
 name: underlay
 
 releases:
-- {name: etcd, version: 35}
+- {name: etcd, version: latest}
 - {name: docker, version: latest}
 
 stemcells:
