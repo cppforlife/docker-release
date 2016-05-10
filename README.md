@@ -13,3 +13,7 @@ $ bosh run-errand bootstrap_swarm
 $ export DOCKER_HOST=tcp://10.244.1.2:32768
 $ docker ps --all
 ```
+
+## TODO
+
+- mark nodes by AZ, and custom tags, elastic IPs, ELBs?
