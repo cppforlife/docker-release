@@ -12,13 +12,11 @@ packages:
 
 templates:
   bin/cgroupfs-mount: bin/cgroupfs-mount
-  bin/docker_ctl: bin/docker_ctl
-  bin/job_properties.sh.erb: bin/job_properties.sh
-  config/docker.cacert.erb: config/docker.cacert
-  config/docker.cert.erb: config/docker.cert
-  config/docker.key.erb: config/docker.key
-  config/docker_logrotate.cron.erb: config/docker_logrotate.cron
-  config/logrotate.conf.erb: config/logrotate.conf
+  bin/ctl: bin/ctl
+  bin/props.sh: bin/props.sh
+  config/ca: config/ca
+  config/cert: config/cert
+  config/private_key: config/private_key
 
 properties:
   user:
@@ -94,30 +92,11 @@ properties:
     description: "Array of storage driver options"
 
   tls:
-    description: "Use TLS"
-    default: false
-  tls_cacert:
-    description: "Trust only remotes providing a certificate signed by the CA given here"
-  tls_cert:
-    description: "TLS certificate file"
-  tls_key:
-    description: "TLS key file"
-  tls_verify:
-    description: "Use TLS and verify the remote"
-    default: false
+    type: certificate
+    description: "TLS certificate"
   userland_proxy:
     description: "Use userland proxy for loopback traffic"
     default: true
-
-  daemon.logrotate.frequency:
-    description: "Frequency to run logrotate for Docker daemon log files (crontab five time and date fields)"
-    default: "0 * * * *"
-  daemon.logrotate.rotate:
-    description: "Number of times Docker daemon log files are rotated before being removed"
-    default: "7"
-  daemon.logrotate.size:
-    description: "Size before Docker daemon log files are rotated"
-    default: "10M"
 
   inside_container:
     description: "This job is running inside another container"

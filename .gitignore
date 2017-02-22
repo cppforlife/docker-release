@@ -1,4 +1,3 @@
-config/dev.yml
 config/private.yml
 releases/*.tgz
 releases/**/*.tgz

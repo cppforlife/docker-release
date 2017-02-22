@@ -1,8 +1,10 @@
-set -e
-set -u
+#!/bin/bash
 
-# Detect # of CPUs so make jobs can be parallelized
+set -e -u
+
 CPUS=`grep -c ^processor /proc/cpuinfo`
+
+tar xzvf docker/docker-1.13.1.tgz
 
 # We grab the latest versions that are in the directory
 AUFS_TOOLS_VERSION=`ls -r docker/aufs-tools_*.deb | sed 's/docker\/aufs-tools_\(.*\).deb/\1/' | head -1`
@@ -46,7 +48,7 @@ make install
 
 # Copy Docker binaries
 mkdir -p ${BOSH_INSTALL_TARGET}/bin
-cp -a ${BOSH_COMPILE_TARGET}/docker-1.11.1/* ${BOSH_INSTALL_TARGET}/bin/
+cp -a ${BOSH_COMPILE_TARGET}/docker/* ${BOSH_INSTALL_TARGET}/bin/
 chmod +x ${BOSH_INSTALL_TARGET}/bin/*
 
-cp -a ${BOSH_COMPILE_TARGET}/bosh-helpers/* ${BOSH_INSTALL_TARGET}/
+cp -a ${BOSH_COMPILE_TARGET}/ctl_utils.sh ${BOSH_INSTALL_TARGET}/

@@ -1,20 +1,35 @@
 #!/bin/bash
 
-set -e # exit immediately if a simple command exits with a non-zero status
+set -e
 
-# Setup common env vars and folders
-source /var/vcap/packages/docker/ctl_setup.sh 'docker'
-export DOCKER_PID_FILE=${DOCKER_PID_DIR}/docker.pid
+export JOB_DIR=/var/vcap/jobs/docker
+export LOG_DIR=/var/vcap/sys/log/docker
+export RUN_DIR=/var/vcap/sys/run/docker
+export STORE_DIR=/var/vcap/store/docker
+export TMP_DIR=/var/vcap/sys/tmp/docker
+export TMPDIR=$TMP_DIR
+
+for dir in $LOG_DIR $RUN_DIR $STORE_DIR $TMP_DIR; do
+  mkdir -p ${dir}
+  chown vcap:vcap ${dir}
+  chmod 775 ${dir}
+done
+
+for package_bin_dir in $(ls -d /var/vcap/packages/*/*bin); do
+  export PATH=${package_bin_dir}:$PATH
+done
+
+source /var/vcap/packages/docker/ctl_utils.sh
+source /var/vcap/jobs/docker/bin/props.sh
+export DOCKER_PID_FILE=${DOCKER_PID_DIR}/pid
 
 case $1 in
 
   start)
-    pid_guard ${DOCKER_PID_FILE} ${JOB_NAME}
+    pid_guard ${DOCKER_PID_FILE} docker
 
-    # Install aufs-tools
     dpkg -i /var/vcap/packages/docker/aufs-tools_20120411-3_amd64.deb
 
-    # Create Docker user & group
     create_group ${DOCKER_GROUP}
     create_user ${DOCKER_USER} ${DOCKER_GROUP}
 
@@ -28,9 +43,6 @@ case $1 in
       chown ${DOCKER_USER}:${DOCKER_GROUP} ${DOCKER_STORE_DIR}/docker
       chmod 770 ${DOCKER_STORE_DIR}/docker
     fi
-
-    # Enable logrotate crontab
-    (crontab -l | sed /docker.*logrotate/d; cat ${DOCKER_CONF_DIR}/docker_logrotate.cron) | sed /^$/d | crontab
 
     # Mount cgroupfs hierarchy
     ${JOB_DIR}/bin/cgroupfs-mount
@@ -46,7 +58,6 @@ case $1 in
         set -e
     fi
 
-    # Start Docker daemon
     exec chpst -u ${DOCKER_USER}:${DOCKER_GROUP} docker daemon \
         ${DOCKER_API_CORS_HEADER:-} \
         ${DOCKER_BRIDGE:-} \
@@ -87,20 +98,18 @@ case $1 in
     ;;
 
   stop)
-    # Stop Docker containers
     echo -n "Stopping docker containers: "
     containers="$(chpst -u ${DOCKER_USER}:${DOCKER_GROUP} docker --host unix://${DOCKER_PID_DIR}/docker.sock ps -q)"
     if [[ ! -z $containers ]]; then
-      for container in $containers
-      do
+      for container in $containers; do
         echo -n "Stopping docker container ${container}... "
-        chpst -u ${DOCKER_USER}:${DOCKER_GROUP} docker --host unix://${DOCKER_PID_DIR}/docker.sock stop ${container}
+        chpst -u ${DOCKER_USER}:${DOCKER_GROUP} docker \
+          --host unix://${DOCKER_PID_DIR}/docker.sock stop ${container}
       done
     else
       echo "Nothing to do."
     fi
 
-    # Stop Docker daemon
     echo -n "Stopping docker daemon..."
     kill_and_wait ${DOCKER_PID_FILE}
     ;;

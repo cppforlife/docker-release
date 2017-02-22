@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 # Directory to store the Docker configuration files
 export DOCKER_CONF_DIR=${JOB_DIR}/config
@@ -133,25 +133,11 @@ export DOCKER_STORAGE_DRIVER="--storage-driver=<%= storage_driver %>"
 export DOCKER_STORAGE_OPTIONS="<%= storage_options_list %>"
 <% end %>
 
-<% if p('tls') == true %>
-# Use TLS
+# Always use TLS
 export DOCKER_TLS="--tls"
-<% end %>
-
-<% if_p('tls_cacert') do |tls_cacert| %>
-# Trust only remotes providing a certificate signed by the CA given here
-export DOCKER_TLS_CACERT="--tlscacert=${DOCKER_CONF_DIR}/docker.cacert"
-<% end %>
-
-<% if_p('tls_cert') do |tls_cert| %>
-# Path to TLS certificate file
-export DOCKER_TLS_CERT="--tlscert=${DOCKER_CONF_DIR}/docker.cert"
-<% end %>
-
-<% if_p('tls_key') do |tls_key| %>
-# Path to TLS key file
-export DOCKER_TLS_KEY="--tlskey=${DOCKER_CONF_DIR}/docker.key"
-<% end %>
+export DOCKER_TLS_CACERT="--tlscacert=${DOCKER_CONF_DIR}/ca"
+export DOCKER_TLS_CERT="--tlscert=${DOCKER_CONF_DIR}/cert"
+export DOCKER_TLS_KEY="--tlskey=${DOCKER_CONF_DIR}/private_key"
 
 # Use userland proxy for loopback traffic
 export DOCKER_USERLAND_PROXY="--userland-proxy=<%= p('userland_proxy') %>"
@@ -165,10 +151,12 @@ export DOCKER_CLUSTER_STORE="--cluster-store=<%= cluster_store %> --cluster-adve
 export HTTP_PROXY="<%= http_proxy %>"
 export http_proxy="<%= http_proxy %>"
 <% end %>
+
 <% if_p('env.https_proxy') do |https_proxy| %>
 export HTTPS_PROXY="<%= https_proxy %>"
 export https_proxy="<%= https_proxy %>"
 <% end %>
+
 <% if_p('env.no_proxy') do |no_proxy| %>
 export NO_PROXY="<%= no_proxy %>"
 export no_proxy="<%= no_proxy %>"

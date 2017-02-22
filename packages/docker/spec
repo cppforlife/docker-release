@@ -1,15 +1,9 @@
 ---
 name: docker
 
-dependencies: []
-
 files:
 - docker/aufs-tools_20120411-3_amd64.deb
 - docker/autoconf-2.69.tar.gz
 - docker/bridge-utils-1.5.tar.gz
-- docker-1.11.1/docker
-- docker-1.11.1/docker-containerd
-- docker-1.11.1/docker-containerd-ctr
-- docker-1.11.1/docker-containerd-shim
-- docker-1.11.1/docker-runc
-- bosh-helpers/*
+- docker/docker-1.13.1.tgz
+- ctl_utils.sh
