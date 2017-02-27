@@ -134,7 +134,7 @@ export DOCKER_STORAGE_OPTIONS="<%= storage_options_list %>"
 <% end %>
 
 # Always use TLS
-export DOCKER_TLS="--tls"
+export DOCKER_TLS="--tlsverify"
 export DOCKER_TLS_CACERT="--tlscacert=${DOCKER_CONF_DIR}/ca"
 export DOCKER_TLS_CERT="--tlscert=${DOCKER_CONF_DIR}/cert"
 export DOCKER_TLS_KEY="--tlskey=${DOCKER_CONF_DIR}/private_key"
