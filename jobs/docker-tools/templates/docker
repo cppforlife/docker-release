@@ -1,0 +1,7 @@
+#!/bin/bash
+
+export DOCKER_TLS_VERIFY=true
+export DOCKER_HOST=tcp://<%= p("address") %>:<%= p("port") %>
+export DOCKER_CERT_PATH=/var/vcap/jobs/docker-tools/config/ # {ca,cert,key}.pem
+
+exec /var/vcap/packages/docker/bin/docker $@

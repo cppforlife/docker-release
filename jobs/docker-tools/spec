@@ -1,0 +1,24 @@
+---
+name: docker-tools
+
+packages:
+- docker
+
+templates:
+  docker: bin/docker
+  ca: config/ca.pem
+  cert: config/cert.pem
+  private_key: config/key.pem
+
+properties:
+  tls:
+    type: certificate
+    description: "Client TLS certificate"
+
+  # todo ideally consumed over link
+  address:
+    description: "Docker daemon connection address"
+    default: 127.0.0.1
+  port:
+    description: "Docker daemon connection port"
+    default: 4243
