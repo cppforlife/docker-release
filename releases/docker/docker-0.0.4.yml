@@ -1,0 +1,39 @@
+name: docker
+version: 0.0.4
+commit_hash: 373d3f7
+uncommitted_changes: false
+jobs:
+- name: bootstrap_swarm
+  version: 073d5e959a2b0e164721acbccaf525b0fbc460bde9a2a1a75f44bf45005f6bf5
+  fingerprint: 073d5e959a2b0e164721acbccaf525b0fbc460bde9a2a1a75f44bf45005f6bf5
+  sha1: sha256:c80c94bea2a4cf10f1cd535dc4612ac31578c9d95e44d5db9577303a7dface3b
+  packages:
+  - docker
+  - docker_swarm
+- name: docker
+  version: 47f14aee4e73173848b54456c8f2edf54e2dbca9a1b381d3a095b2dd451b8a83
+  fingerprint: 47f14aee4e73173848b54456c8f2edf54e2dbca9a1b381d3a095b2dd451b8a83
+  sha1: sha256:ebfa9ed2526028c6a3f71fb6f3ee9509d72386046c7bb7cd083a627ce6c044c3
+  packages:
+  - docker
+- name: docker-tools
+  version: 1d984da74ac01e725e91c972fdbff6fb864c5165129bc5347fa15ab73a69eb38
+  fingerprint: 1d984da74ac01e725e91c972fdbff6fb864c5165129bc5347fa15ab73a69eb38
+  sha1: sha256:eba12f46b7d2494378515efadcafd094dda3e6c7db0264bd23354b38f48f78cf
+  packages:
+  - docker
+packages:
+- name: docker
+  version: 628b5ee789edc044c77af8bbc71dbeaab51fdbc1196f79e574b3bdd185c13103
+  fingerprint: 628b5ee789edc044c77af8bbc71dbeaab51fdbc1196f79e574b3bdd185c13103
+  sha1: sha256:81279288c7415606aaaf857abefada8a8a4f5c3936c8cd279d8ba808f3b3b177
+  dependencies: []
+- name: docker_swarm
+  version: 70594ec0d18523aacd602513bce19252258c547aed7f4aa2d783e815f1290e0a
+  fingerprint: 70594ec0d18523aacd602513bce19252258c547aed7f4aa2d783e815f1290e0a
+  sha1: sha256:aa9d1c1f487acb7452f4bcffa636f866e8fa3184cd9fab7618c5df082269bbf8
+  dependencies: []
+license:
+  version: 27e0052c476b6931b771123409be32c57b36d691a7d118866ef0a0a340b19d72
+  fingerprint: 27e0052c476b6931b771123409be32c57b36d691a7d118866ef0a0a340b19d72
+  sha1: sha256:29bc882000137301b1ad5fafebb7517aa29067e27147ae74e6bab8b359407f32
