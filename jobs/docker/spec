@@ -33,9 +33,6 @@ properties:
     description: "TCP port where Docker daemon will listen to (if not set, TCP will not be available)"
     default: "4243"
 
-  api_cors_header:
-    description: "Set CORS headers in the remote API"
-    default: false
   bridge:
     description: "Name of the network bridge to attach containers (defaults to docker0)"
   cidr_prefix:
@@ -53,8 +50,6 @@ properties:
     description: "Array of DNS servers to be used by Docker"
   dns_domains:
     description: "Array of DNS search domains to be used by Docker"
-  exec_driver:
-    description: "Use a specific exec driver"
   exec_options:
     description: "Array of exec driver options"
   icc:

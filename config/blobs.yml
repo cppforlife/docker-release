@@ -10,10 +10,10 @@ docker/bridge-utils-1.5.tar.gz:
   size: 33472
   object_id: 239d81d0-bb81-46bc-56a7-34a9d8125dc6
   sha: 1f71b6f22f5d2b6d21e146f4ac20820ad42e58ee
-docker/docker-1.13.1.tgz:
-  size: 27851024
-  object_id: 10f12f08-f5f2-4ad2-4069-44a53678b944
-  sha: 0ff46d8eea0c694f349e1d40cdc10200a1a19e2c
+docker/docker-20.10.8.tgz:
+  size: 60948356
+  object_id: ada23d00-4dd9-4dad-6e30-c99b74247629
+  sha: sha256:7ea11ecb100fdc085dbfd9ab1ff380e7f99733c890ed815510a5952e5d6dd7e0
 docker/swarm-1.1.0.tar:
   size: 18152448
   object_id: 758f1628-847a-4697-756a-94126486315c
