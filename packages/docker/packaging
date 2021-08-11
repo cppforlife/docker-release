@@ -4,7 +4,7 @@ set -e -u
 
 CPUS=`grep -c ^processor /proc/cpuinfo`
 
-tar xzvf docker/docker-1.13.1.tgz
+tar xzvf docker/docker-20.10.8.tgz
 
 # We grab the latest versions that are in the directory
 AUFS_TOOLS_VERSION=`ls -r docker/aufs-tools_*.deb | sed 's/docker\/aufs-tools_\(.*\).deb/\1/' | head -1`

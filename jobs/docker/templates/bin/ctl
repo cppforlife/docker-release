@@ -58,8 +58,7 @@ case $1 in
         set -e
     fi
 
-    exec chpst -u ${DOCKER_USER}:${DOCKER_GROUP} docker daemon \
-        ${DOCKER_API_CORS_HEADER:-} \
+    exec chpst -u ${DOCKER_USER}:${DOCKER_GROUP} dockerd \
         ${DOCKER_BRIDGE:-} \
         ${DOCKER_DEBUG:-} \
         ${DOCKER_DEFAULT_GATEWAY:-} \
@@ -67,7 +66,6 @@ case $1 in
         ${DOCKER_DEFAULT_ULIMITS:-} \
         ${DOCKER_DNS_DOMAINS:-} \
         ${DOCKER_DNS_SERVERS:-} \
-        ${DOCKER_EXEC_DRIVER:-} \
         ${DOCKER_EXEC_OPTIONS:-} \
         --group ${DOCKER_GROUP} \
         --graph ${DOCKER_STORE_DIR}/docker \
@@ -87,7 +85,7 @@ case $1 in
         ${DOCKER_STORAGE_OPTIONS:-} \
         ${DOCKER_SELINUX_ENABLED:-} \
         ${DOCKER_TCP:-} \
-        ${DOCKER_TLS:-} \
+        ${DOCKER_TLS_VERIFY_ENABLED:-} \
         ${DOCKER_TLS_CACERT:-} \
         ${DOCKER_TLS_CERT:-} \
         ${DOCKER_TLS_KEY:-} \

@@ -26,9 +26,6 @@ export DOCKER_GROUP="<%= p('group') %>"
 export DOCKER_TCP="--host tcp://<%= address %>:<%= port %>"
 <% end %>
 
-# Set CORS headers in the remote API
-export DOCKER_API_CORS_HEADER="--api-enable-cors=<%= p('api_cors_header') %>"
-
 <% if_p('bridge', 'cidr_prefix') do |bridge, cidr_prefix| %>
 # Attach containers to a network bridge
 export DOCKER_BRIDGE="--bridge=<%= bridge %>"
@@ -65,11 +62,6 @@ export DOCKER_DNS_DOMAINS="<%= dns_domains_list %>"
 <% dns_servers_list = dns_servers.map { |dns_server| "--dns=#{dns_server}" }.join(' ') %>
 # Array of DNS servers to be used by Docker
 export DOCKER_DNS_SERVERS="<%= dns_servers_list %>"
-<% end %>
-
-<% if_p('exec_driver') do |exec_driver| %>
-# Use a specific exec driver
-export DOCKER_EXEC_DRIVER"--exec-driver=<%= exec_driver %>"
 <% end %>
 
 <% if_p('exec_options') do |exec_options| %>
@@ -134,7 +126,7 @@ export DOCKER_STORAGE_OPTIONS="<%= storage_options_list %>"
 <% end %>
 
 # Always use TLS
-export DOCKER_TLS="--tlsverify"
+export DOCKER_TLS_VERIFY_ENABLED="--tlsverify"
 export DOCKER_TLS_CACERT="--tlscacert=${DOCKER_CONF_DIR}/ca"
 export DOCKER_TLS_CERT="--tlscert=${DOCKER_CONF_DIR}/cert"
 export DOCKER_TLS_KEY="--tlskey=${DOCKER_CONF_DIR}/private_key"
